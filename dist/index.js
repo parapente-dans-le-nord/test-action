@@ -2742,12 +2742,12 @@ async function run() {
     const fs = __nccwpck_require__(147)
     const path = __nccwpck_require__(17)
     const directoryPath = __dirname
-    core.debug('path is ' + directoryPath)
+    core.debug('path is ${directoryPath}')
 
     const files = fs.readdirSync(directoryPath)
-    files.forEach(file => {
+    for (const file of files) {
       core.debug(file)
-    })
+    }
 
     // Log the current timestamp, wait, then log the new timestamp
     core.debug(new Date().toTimeString())

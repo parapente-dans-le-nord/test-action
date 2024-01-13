@@ -15,12 +15,12 @@ async function run() {
     const fs = require('fs')
     const path = require('path')
     const directoryPath = __dirname
-    core.debug('path is ' + directoryPath)
+    core.debug('path is ${directoryPath}')
 
     const files = fs.readdirSync(directoryPath)
-    files.forEach(file => {
+    for (const file of files) {
       core.debug(file)
-    })
+    }
 
     // Log the current timestamp, wait, then log the new timestamp
     core.debug(new Date().toTimeString())
