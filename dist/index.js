@@ -2739,6 +2739,16 @@ async function run() {
     // Debug logs are only output if the `ACTIONS_STEP_DEBUG` secret is true
     core.debug(`Waiting ${ms} milliseconds ...`)
 
+    const fs = __nccwpck_require__(147)
+    const path = __nccwpck_require__(17)
+    const directoryPath = __dirname
+    core.debug('path is ' + directoryPath)
+
+    const files = fs.readdirSync(directoryPath)
+    files.forEach(file => {
+      core.debug(file)
+    })
+
     // Log the current timestamp, wait, then log the new timestamp
     core.debug(new Date().toTimeString())
     await wait(parseInt(ms, 10))
