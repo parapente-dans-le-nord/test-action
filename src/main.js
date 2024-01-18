@@ -17,21 +17,17 @@ async function run() {
     for (const file of files) {
       core.debug(file)
     }
-
-    fs.readFile(`${repoPath}/src/spots.json`, 'utf8', (err, data) => {
-      if (err) {
-        core.setFailed('spots.json does not exist')
-        return
-      }
-
-      try {
-        const jsonData = JSON.parse(data)
-        spotName = jsonData['spots'][0]['name']
-        core.debug(spotName)
-      } catch (parseError) {
-        core.setFailed('spots.json is not parsable')
-      }
-    })
+    try {
+      const data = await fs.readFile(`${repoPath}/src/spots.json`, 'utf8')
+      const jsonData = JSON.parse(data)
+      spotName = jsonData['spots'][0]['name']
+      core.debug(spotName)
+    } catch (readFileError) {
+      core.setFailed(
+        `Error reading or parsing spots.json: ${readFileError.message}`
+      )
+      return
+    }
 
     core.setOutput('yolo', spotName)
   } catch (error) {
