@@ -2735,6 +2735,7 @@ const { wait } = __nccwpck_require__(312)
 async function run() {
   try {
     const repoPath = core.getInput('repoPath', { required: true })
+    let spotName = ''
 
     const fs = __nccwpck_require__(147)
     core.debug(`path is ${repoPath}`)
@@ -2744,9 +2745,23 @@ async function run() {
       core.debug(file)
     }
 
-    core.setOutput('yolo', 'haha')
+    fs.readFile(`${repoPath}/src/spots.json`, 'utf8', (err, data) => {
+      if (err) {
+        core.setFailed('spots.json does not exist')
+        return
+      }
+
+      try {
+        const jsonData = JSON.parse(data)
+        spotName = jsonData['spots'][0]['name']
+        core.debug(spotName)
+      } catch (parseError) {
+        core.setFailed('spots.json is not parsable')
+      }
+    })
+
+    core.setOutput('yolo', spotName)
   } catch (error) {
-    // Fail the workflow run if an error occurs
     core.setFailed(error.message)
   }
 }
