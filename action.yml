@@ -1,18 +1,16 @@
-name: 'The name of your action here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'Json spots playground'
+description: 'Validate the json spots file, then output a randomly choosed one'
+author: 'myself'
 
-# Define your inputs here.
 inputs:
-  milliseconds:
-    description: 'Your input description here'
+  repoPath:
+    description: 'the path of the checkouted workspace'
     required: true
-    default: '1000'
+    default: ''
 
-# Define your outputs here.
 outputs:
-  time:
-    description: 'Your output description here'
+  yolo:
+    description: 'a string'
 
 runs:
   using: node20
