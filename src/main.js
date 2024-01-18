@@ -15,7 +15,7 @@ async function run() {
     const fs = require('fs')
     const path = require('path')
     const directoryPath = __dirname
-    core.debug('path is ${directoryPath}')
+    core.debug(`path is ${directoryPath}`)
 
     const files = fs.readdirSync(directoryPath)
     for (const file of files) {

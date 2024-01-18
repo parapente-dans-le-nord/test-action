@@ -2742,7 +2742,7 @@ async function run() {
     const fs = __nccwpck_require__(147)
     const path = __nccwpck_require__(17)
     const directoryPath = __dirname
-    core.debug('path is ${directoryPath}')
+    core.debug(`path is ${directoryPath}`)
 
     const files = fs.readdirSync(directoryPath)
     for (const file of files) {
