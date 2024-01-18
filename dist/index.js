@@ -2727,6 +2727,7 @@ exports["default"] = _default;
 
 const core = __nccwpck_require__(186)
 const { wait } = __nccwpck_require__(312)
+const fs = __nccwpck_require__(147)
 
 /**
  * The main function for the action.
@@ -2735,17 +2736,17 @@ const { wait } = __nccwpck_require__(312)
 async function run() {
   try {
     const repoPath = core.getInput('repoPath', { required: true })
+    core.debug(`path is ${repoPath}`)
     let spotName = ''
 
-    const fs = __nccwpck_require__(147)
-    core.debug(`path is ${repoPath}`)
-
-    const files = fs.readdirSync(repoPath)
-    for (const file of files) {
-      core.debug(file)
-    }
     try {
-      const data = await fs.readFile(`${repoPath}/src/spots.json`, 'utf8')
+      const data = await new Promise((resolve, reject) => {
+        fs.readFile(`${repoPath}/src/spots.json`, 'utf8', (err, content) => {
+          if (err) reject(err)
+          else resolve(content)
+        })
+      })
+
       const jsonData = JSON.parse(data)
       spotName = jsonData['spots'][0]['name']
       core.debug(spotName)

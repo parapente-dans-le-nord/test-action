@@ -1,5 +1,6 @@
 const core = require('@actions/core')
 const { wait } = require('./wait')
+const fs = require('fs')
 
 /**
  * The main function for the action.
@@ -8,17 +9,17 @@ const { wait } = require('./wait')
 async function run() {
   try {
     const repoPath = core.getInput('repoPath', { required: true })
+    core.debug(`path is ${repoPath}`)
     let spotName = ''
 
-    const fs = require('fs')
-    core.debug(`path is ${repoPath}`)
-
-    const files = fs.readdirSync(repoPath)
-    for (const file of files) {
-      core.debug(file)
-    }
     try {
-      const data = await fs.readFile(`${repoPath}/src/spots.json`, 'utf8')
+      const data = await new Promise((resolve, reject) => {
+        fs.readFile(`${repoPath}/src/spots.json`, 'utf8', (err, content) => {
+          if (err) reject(err)
+          else resolve(content)
+        })
+      })
+
       const jsonData = JSON.parse(data)
       spotName = jsonData['spots'][0]['name']
       core.debug(spotName)
