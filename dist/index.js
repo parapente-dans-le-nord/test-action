@@ -2747,13 +2747,14 @@ async function run() {
         })
       })
 
-      const jsonData = JSON.parse(data)
-      spotName = jsonData['spots'][0]['name']
-      core.debug(spotName)
+      try {
+        const spots = parseSpots(data)
+        spotName = spots['spots'][0]['name']
+      } catch (error) {
+        core.setFailed(`Error parsing spots.json file : ${error}`)
+      }
     } catch (readFileError) {
-      core.setFailed(
-        `Error reading or parsing spots.json: ${readFileError.message}`
-      )
+      core.setFailed(`Error reading spots.json file : ${readFileError.message}`)
       return
     }
 
@@ -2761,6 +2762,16 @@ async function run() {
   } catch (error) {
     core.setFailed(error.message)
   }
+}
+
+function parseSpots(spots) {
+  const jsonData = JSON.parse(spots)
+  const spotName = jsonData['spots'][0]['name']
+  core.debug(spotName)
+  if (spotName === 'Olhain') {
+    throw new Error('La valeur est Olhain, ça fait chier')
+  }
+  return jsonData
 }
 
 module.exports = {
