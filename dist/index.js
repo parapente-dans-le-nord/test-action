@@ -2726,7 +2726,6 @@ exports["default"] = _default;
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 const core = __nccwpck_require__(186)
-const { wait } = __nccwpck_require__(312)
 const fs = __nccwpck_require__(147)
 
 /**
@@ -2774,7 +2773,7 @@ function parseSpots(spots) {
     if (
       !Object.prototype.hasOwnProperty.call(spot, 'type') ||
       spot['type'] === '' ||
-      !['plaine', 'bord de mer', 'treuil'].includes(spot['type'])
+      !['plaine', 'bord-de-mer', 'treuil'].includes(spot['type'])
     ) {
       throw new Error(
         `spot ${spot['name']} has wrong values for type, plaine or bord de mer`
@@ -2788,30 +2787,6 @@ function parseSpots(spots) {
 module.exports = {
   run
 }
-
-
-/***/ }),
-
-/***/ 312:
-/***/ ((module) => {
-
-/**
- * Wait for a number of milliseconds.
- *
- * @param {number} milliseconds The number of milliseconds to wait.
- * @returns {Promise<string>} Resolves with 'done!' after the wait is over.
- */
-async function wait(milliseconds) {
-  return new Promise(resolve => {
-    if (isNaN(milliseconds)) {
-      throw new Error('milliseconds not a number')
-    }
-
-    setTimeout(() => resolve('done!'), milliseconds)
-  })
-}
-
-module.exports = { wait }
 
 
 /***/ }),
@@ -2945,9 +2920,6 @@ module.exports = require("util");
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-/**
- * The entrypoint for the action.
- */
 const { run } = __nccwpck_require__(713)
 
 run()

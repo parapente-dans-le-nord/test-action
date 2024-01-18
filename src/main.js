@@ -1,5 +1,4 @@
 const core = require('@actions/core')
-const { wait } = require('./wait')
 const fs = require('fs')
 
 /**
@@ -47,7 +46,7 @@ function parseSpots(spots) {
     if (
       !Object.prototype.hasOwnProperty.call(spot, 'type') ||
       spot['type'] === '' ||
-      !['plaine', 'bord de mer', 'treuil'].includes(spot['type'])
+      !['plaine', 'bord-de-mer', 'treuil'].includes(spot['type'])
     ) {
       throw new Error(
         `spot ${spot['name']} has wrong values for type, plaine or bord de mer`
