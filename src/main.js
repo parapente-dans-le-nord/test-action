@@ -9,9 +9,8 @@ const fs = require('fs')
 async function run() {
   try {
     const repoPath = core.getInput('repoPath', { required: true })
+    let spot = ''
     core.debug(`path is ${repoPath}`)
-    let spotName = ''
-
     try {
       const data = await new Promise((resolve, reject) => {
         fs.readFile(`${repoPath}/src/spots.json`, 'utf8', (err, content) => {
@@ -21,7 +20,7 @@ async function run() {
       })
 
       try {
-        const spot = parseSpots(data)
+        spot = parseSpots(data)
       } catch (error) {
         core.setFailed(`Error parsing spots.json file : ${error}`)
       }
@@ -37,21 +36,26 @@ async function run() {
 }
 
 function parseSpots(spots) {
+  let jsonData = ''
   try {
-    const jsonData = JSON.parse(spots)
+    jsonData = JSON.parse(spots)
   } catch {
-    throw new Error("Failed to parse json")
+    throw new Error('Failed to parse json')
   }
-  
-  for(const spot of jsonData['spots']){
-    if (!spot.hasOwnProperty('type') || spot['type'] === '' || !["plaine","bord de mer"].includes(spot['type'])){
-      throw new Error(`spot ${spot['name']} has wrong values for type, plaine or bord de mer`)
+
+  for (const spot of jsonData['spots']) {
+    if (
+      !Object.prototype.hasOwnProperty.call(spot, 'type') ||
+      spot['type'] === '' ||
+      !['plaine', 'bord de mer'].includes(spot['type'])
+    ) {
+      throw new Error(
+        `spot ${spot['name']} has wrong values for type, plaine or bord de mer`
+      )
     }
   }
 
-  const spot = jsonData['spots'][Math.floor(Math.random() * jsonData['spots'].length)]
-
-  return spot
+  return jsonData['spots'][Math.floor(Math.random() * jsonData['spots'].length)]
 }
 
 module.exports = {

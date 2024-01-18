@@ -2736,9 +2736,8 @@ const fs = __nccwpck_require__(147)
 async function run() {
   try {
     const repoPath = core.getInput('repoPath', { required: true })
+    let spot = ''
     core.debug(`path is ${repoPath}`)
-    let spotName = ''
-
     try {
       const data = await new Promise((resolve, reject) => {
         fs.readFile(`${repoPath}/src/spots.json`, 'utf8', (err, content) => {
@@ -2748,8 +2747,7 @@ async function run() {
       })
 
       try {
-        const spots = parseSpots(data)
-        spotName = spots['spots'][0]['name']
+        spot = parseSpots(data)
       } catch (error) {
         core.setFailed(`Error parsing spots.json file : ${error}`)
       }
@@ -2758,20 +2756,33 @@ async function run() {
       return
     }
 
-    core.setOutput('yolo', spotName)
+    core.setOutput('spotName', spot['name'])
   } catch (error) {
     core.setFailed(error.message)
   }
 }
 
 function parseSpots(spots) {
-  const jsonData = JSON.parse(spots)
-  const spotName = jsonData['spots'][0]['name']
-  core.debug(spotName)
-  if (spotName === 'Olhain') {
-    throw new Error('La valeur est Olhain, ça fait chier')
+  let jsonData = ''
+  try {
+    jsonData = JSON.parse(spots)
+  } catch {
+    throw new Error('Failed to parse json')
   }
-  return jsonData
+
+  for (const spot of jsonData['spots']) {
+    if (
+      !Object.prototype.hasOwnProperty.call(spot, 'type') ||
+      spot['type'] === '' ||
+      !['plaine', 'bord de mer'].includes(spot['type'])
+    ) {
+      throw new Error(
+        `spot ${spot['name']} has wrong values for type, plaine or bord de mer`
+      )
+    }
+  }
+
+  return jsonData['spots'][Math.floor(Math.random() * jsonData['spots'].length)]
 }
 
 module.exports = {
