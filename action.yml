@@ -9,8 +9,8 @@ inputs:
     default: ''
 
 outputs:
-  yolo:
-    description: 'a string'
+  spotName:
+    description: 'a random spot name'
 
 runs:
   using: node20
