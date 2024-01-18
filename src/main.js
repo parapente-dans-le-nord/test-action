@@ -7,28 +7,17 @@ const { wait } = require('./wait')
  */
 async function run() {
   try {
-    const ms = core.getInput('milliseconds', { required: true })
-
-    // Debug logs are only output if the `ACTIONS_STEP_DEBUG` secret is true
-    core.debug(`Waiting ${ms} milliseconds ...`)
+    const repoPath = core.getInput('repoPath', { required: true })
 
     const fs = require('fs')
-    const path = require('path')
-    const directoryPath = __dirname
-    core.debug(`path is ${directoryPath}`)
+    core.debug(`path is ${repoPath}`)
 
-    const files = fs.readdirSync(directoryPath)
+    const files = fs.readdirSync(repoPath)
     for (const file of files) {
       core.debug(file)
     }
 
-    // Log the current timestamp, wait, then log the new timestamp
-    core.debug(new Date().toTimeString())
-    await wait(parseInt(ms, 10))
-    core.debug(new Date().toTimeString())
-
-    // Set outputs for other workflow steps to use
-    core.setOutput('time', new Date().toTimeString())
+    core.setOutput('yolo', 'haha')
   } catch (error) {
     // Fail the workflow run if an error occurs
     core.setFailed(error.message)
